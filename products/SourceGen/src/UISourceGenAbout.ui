@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>UISourceGenAbout</class>
+ <widget class="QDialog" name="UISourceGenAbout">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>350</width>
+    <height>200</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>350</width>
+    <height>200</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>350</width>
+    <height>200</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>SourceGen Alpha (11/12/2016)</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+
+QPushButton
+{
+	padding:8px;
+	border:2px solid #eefaab;
+	color:#eefaab;
+	border-radius:4px;
+    width:96px;
+    background:#77000000;
+	font-size:16px;
+}
+
+QLabel
+{
+	color:#eefaab;
+}
+QPushButton::hover
+{
+	background: #eefaab;
+	color:black;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:xx-large; font-weight:600;&quot;&gt;Version 2.0&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Author: Corey Berry &lt;/p&gt;&lt;p&gt;Build Date: 04-14-2016&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="m_btnClose">
+     <property name="font">
+      <font>
+       <pointsize>-1</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Close</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

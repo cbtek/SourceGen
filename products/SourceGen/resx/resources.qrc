@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>movPlasma.gif</file>
+        <file>movCircuit.gif</file>
+        <file>imgStarfield.png</file>
+        <file>imgSpace.png</file>
+        <file>imgSIG.png</file>
+        <file>imgFlat.png</file>
+        <file>imgCircuit.png</file>
+    </qresource>
+</RCC>
