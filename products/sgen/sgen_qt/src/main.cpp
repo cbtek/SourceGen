@@ -27,11 +27,13 @@ SOFTWARE.
 #include <QFile>
 #include <iostream>
 
+#include "UISourceGen.h"
+
 #include "utility/inc/StringUtils.hpp"
 #include "utility/inc/FileUtils.hpp"
 
-#include "SourceGen.h"
-#include "UISourceGen.h"
+#include "sgen_utils/inc/SourceGen.h"
+
 
 using namespace cbtek::common::utility;
 using namespace cbtek::products::sourcegen;
@@ -120,7 +122,7 @@ int main(int argc , char ** argv)
         std::cout << "\t7) QMAINWINDOW\n";
         std::cout << "------------------------------------\n";
         std::cout << "Example:\n";
-        std::cout << "sourcegen\n";
+        std::cout << "sgen\n";
         std::cout << "--class-name \"MyClass\" \n";
         std::cout << "--class-type \"NORMAL\" \n";
         std::cout << "--class-namespace \"MyCompany.Package.MyClass\" \n";

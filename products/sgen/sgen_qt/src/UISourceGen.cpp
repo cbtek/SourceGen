@@ -29,7 +29,8 @@ SOFTWARE.
 
 #include "UISourceGen.h"
 #include "UISourceGenAbout.h"
-#include "SourceGen.h"
+
+#include "sgen_utils/inc/SourceGen.h"
 
 #include "utility/inc/StringList.h"
 #include "utility/inc/ColorUtils.hpp"

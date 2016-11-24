@@ -1,0 +1,37 @@
+---------------------------
+Compiling
+---------------------------
+SourceGen uses Qt5 and CMake 2.8.12.2 or higher. 
+It also comes with a few C++ utilities that are statically compiled
+
+WINDOWS and MACOS:
+
+1) Install the latest version of CMake.
+2) Download and install the latest version of QtSDK
+3) Launch QtCreator and load the top-level CMakeLists.txt file using the "Open File or Project" command 
+4) The CMake setup dialog will be displayed; Select a location to put your executables and click next
+5) For CMake arguments enter: -DCMAKE_BUILD_TYPE=Release
+6) Click "Run CMake"
+7) Click "Finish"
+8) Press "CTRL+B" or click the Build Icon (Hammer)
+9) Click the Play button to run 
+
+
+
+LINUX:
+Install Qt5 for your platform then just run CMake.
+
+If you are on a Debian-based distro then installing the following should install all required libs:
+
+1) sudo apt-get install libqt5declarative5 qt5-default qtchooser
+2) Navigate to SigSourceGen/common
+3) Run cmake ..
+4) Run make -j8
+5) Executable sould be SourceGen/sourcegen
+
+If anyone has any questions or suggestions please send them to me at Corey.Berry@cbtek.net
+
+
+
+
+

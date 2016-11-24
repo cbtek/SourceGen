@@ -34,7 +34,7 @@ SOFTWARE.
 #include "utility/inc/StringList.h"
 #include "utility/inc/ObjectList.hpp"
 
-#include "SourceGenInfo.h"
+#include "sgen_utils/inc/SourceGen.h"
 
 class Ui_UISourceGen;
 
