@@ -11,14 +11,11 @@ set(CURR_TARGET_SOURCES "${CURR_TARGET}_SOURCES")
 set(CURR_TARGET_FORMS "${CURR_TARGET}_FORMS")
 set(CURR_TARGET_HEADERS "${CURR_TARGET}_HEADERS")
 set(CURR_TARGET_HEADERS_NO_MOC "${CURR_TARGET}_HEADERS_NO_MOC")
-set(CURR_TARGET_RESOURCES "${CURR_TARGET}_RESOURCES")
 
 include_directories(src)
 include_directories(inc)
-include_directories(res)
 
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 find_package(Qt5Widgets REQUIRED)
@@ -29,7 +26,6 @@ find_package(Qt5Widgets REQUIRED)
 file(GLOB CURR_TARGET_SOURCES "src/*.cpp")
 file(GLOB CURR_TARGET_FORMS "src/*.ui")
 file(GLOB CURR_TARGET_HEADERS "inc/*.h*")
-file(GLOB CURR_TARGET_RESOURCES "resx/*.qrc")
 
 
 
@@ -40,8 +36,7 @@ add_executable(${CURR_TARGET}
                ${PLATFORM}
                ${CURR_TARGET_SOURCES}
                ${CURR_TARGET_HEADERS}
-               ${CURR_TARGET_FORMS}
-               ${CURR_TARGET_RESOURCES}
+               ${CURR_TARGET_FORMS}               
                )
 
 #==============================================================================
@@ -67,4 +62,4 @@ target_link_libraries(${CURR_TARGET}
 # so that the exe can see them
 add_custom_command(TARGET ${CURR_TARGET} POST_BUILD
                  COMMAND ${CMAKE_COMMAND} -E copy_directory
-                     ${CMAKE_CURRENT_SOURCE_DIR}/templates $<TARGET_FILE_DIR:${CURR_TARGET}>/templates)
+                 ${CMAKE_CURRENT_SOURCE_DIR}/templates $<TARGET_FILE_DIR:${CURR_TARGET}>/templates)

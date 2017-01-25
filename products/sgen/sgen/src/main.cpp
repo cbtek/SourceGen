@@ -38,6 +38,10 @@ int main(int argc , char ** argv)
 {          
     std::string classType       = StringUtils::toUpperTrimmed(StringUtils::getCommandLineArg(argc,argv,"--class-type","-t"));
     std::string className       = StringUtils::getCommandLineArg(argc,argv,"--class-name","-n");
+    if (StringUtils::trimmed(classType).empty())
+    {
+        classType = "NORMAL";
+    }
     std::string classInherits   = StringUtils::getCommandLineArg(argc,argv,"--class-inherits","-cih");
     std::string classIncludes   = StringUtils::getCommandLineArg(argc,argv,"--class-includes","-cin");
     std::string classNamespace  = StringUtils::getCommandLineArg(argc,argv,"--class-namespace","-ns");
@@ -46,12 +50,10 @@ int main(int argc , char ** argv)
     std::string copyrightFile   = StringUtils::getCommandLineArg(argc,argv,"--copyright-file","-cr");
     std::string headerSubfolder = StringUtils::getCommandLineArg(argc,argv,"--header-subfolder","-inc");
     std::string sourceSubfolder = StringUtils::getCommandLineArg(argc,argv,"--source-subfolder","-src");
-    std::string uiSubfolder     = StringUtils::getCommandLineArg(argc,argv,"--ui-subfolder","-ui");
-
+    std::string uiSubfolder     = StringUtils::getCommandLineArg(argc,argv,"--ui-subfolder","-ui");    
+    bool noNameArg = StringUtils::trimmed(className).length() == 0;
     bool closeOnSave = StringUtils::commandLineArgExists(argc,argv,"--close-on-save");
-    bool showHelp  = StringUtils::commandLineArgExists(argc,argv,"--help");
-    bool showUI  = StringUtils::commandLineArgExists(argc,argv,"--populate-ui");
-    bool disableAnimations  = StringUtils::commandLineArgExists(argc,argv,"--disable-animations");
+    bool showHelp  = StringUtils::commandLineArgExists(argc,argv,"--help") || noNameArg;
 //For debugging:
 //    std::cerr << "        Class Type: ["<<classType<<"]"<<std::endl;
 //    std::cerr << "        Class Name: ["<<className<<"]"<<std::endl;
@@ -83,26 +85,28 @@ int main(int argc , char ** argv)
     info.setSrcSubFolder(sourceSubfolder);
     info.setIncSubFolder(headerSubfolder);
     info.setUiSubFolder(uiSubfolder);
-    info.setShowUI(showUI);
-    info.setDisableAnimations(disableAnimations);
 
     if (showHelp)
     {
+        if (noNameArg)
+        {
+            std::cout << "ERROR: A class name must be specified!"<<std::endl;
+        }
         std::cout << "------------------------------------\n";
         std::cout << "SourceGen Help \n";
         std::cout << "------------------------------------\n";
-        std::cout << "--class-name       <name of class>    (no spaces, REQ)\n";\
-        std::cout << "--class-type       <class type>       (see class types below, REQ)\n";
-        std::cout << "--class-includes   <list of includes> (seperated by commas, substitute '*' for double quotes)\n";
-        std::cout << "--class-inherits   <list of inherits> (seperated by commas)\n";
-        std::cout << "--class-namespace  <namespace>        (dot notation)\n";
-        std::cout << "--class-attributes <attribute list>   (name1:type1,name2:type2,etc)\n";
-        std::cout << "--copyright-file   <copyright file>   (Location of simple text file for copyright header)\n";
-        std::cout << "--output-folder    <output folder>    (defaults to current dir)\n";
-        std::cout << "--header-subfolder <header sub-folder>    (wrt output-folder)\n";
-        std::cout << "--source-subfolder <source sub-folder>    (wrt output-folder)\n";
-        std::cout << "--ui-subfolder     <ui sub-folder>    (wrt output-folder)\n";
-        std::cout << "--help             (displays this help message)\n";
+        std::cout << "--class-name       [-n]   <name of class>    (required)\n";\
+        std::cout << "--class-type       [-t]   <class type>\n";
+        std::cout << "--class-includes   [-inc] <list of includes>\n";
+        std::cout << "--class-inherits   [-inh] <list of inherits>\n";
+        std::cout << "--class-namespace  [-p]   <namespace>\n";
+        std::cout << "--class-attributes [-a]   <attribute list>\n";
+        std::cout << "--copyright-file   [-c]   <copyright file>\n";
+        std::cout << "--output-folder    [-o]   <output folder>\n";
+        std::cout << "--header-subfolder [-hs]  <header sub-folder>\n";
+        std::cout << "--source-subfolder [-ss]  <source sub-folder>\n";
+        std::cout << "--ui-subfolder     [-us]  <ui sub-folder>\n";
+        std::cout << "--help             [-h]   (displays this help message)\n";
         std::cout << "------------------------------------\n";
         std::cout << "Valid class-types:\n";
         std::cout << "\t1) NORMAL\n";
@@ -114,7 +118,7 @@ int main(int argc , char ** argv)
         std::cout << "\t7) QMAINWINDOW\n";
         std::cout << "------------------------------------\n";
         std::cout << "Example:\n";
-        std::cout << "sourcegen\n";
+        std::cout << "sgen\n";
         std::cout << "--class-name \"MyClass\" \n";
         std::cout << "--class-type \"NORMAL\" \n";
         std::cout << "--class-namespace \"MyCompany.Package.MyClass\" \n";
@@ -142,13 +146,13 @@ int main(int argc , char ** argv)
 
 
     std::string homePath = FileUtils::buildFilePath(SystemUtils::getUserHomeDirectory(),".sgen_templates");
-    std::string localPath = ".sgen_templates";
+    std::string localPath = FileUtils::buildFilePath(SystemUtils::getApplicationDirectory(),".sgen_templates");
     bool isHome = FileUtils::isDirectory(homePath);
     bool isLocal = FileUtils::isDirectory(localPath);
 
     if (!isHome && !isLocal)
     {
-        std::cerr << "Could not locate templates for sourcegen.  Please ensure they are located in same path as binary or in user home directory."<<std::endl;
+        std::cerr << "Could not locate templates for sgen.  \nPlease ensure they are located in same path as the binary or in user home directory."<<std::endl;
         return 0;
     }
 
@@ -158,7 +162,6 @@ int main(int argc , char ** argv)
         std::string fileData = FileUtils::getFileContents(FileUtils::buildFilePath(path,file));
         fileDataMap[file] = fileData;
     }
-
     StringList emptyLog;
     SourceGen::save(info,emptyLog,fileDataMap);
     return 0;

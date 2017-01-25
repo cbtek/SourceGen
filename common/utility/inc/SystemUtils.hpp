@@ -295,5 +295,24 @@ static inline std::string getCurrentDirectory()
     return std::string(dir);
 }
 
+static inline std::string getApplicationDirectory()
+{
+    std::string appPath;
+    char buffer[PATH_MAX];
+    #ifdef _WIN32
+        GetModuleFileNameA(NULL,buffer,256);
+        appPath = std::string(buffer);
+        appPath = FileUtils::getDirPath(appPath);
+
+    #else
+        ssize_t len = ::readlink(path.c_str(), buffer, sizeof(buffer)-1);
+        if (len != -1)
+        {
+          buffer[len] = '\0';
+          appPath = std::string(buffer);
+        }
+    #endif
+    return appPath;
+}
 }}}}//end namespace
 

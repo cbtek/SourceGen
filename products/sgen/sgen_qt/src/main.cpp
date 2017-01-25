@@ -26,11 +26,13 @@ SOFTWARE.
 #include <QApplication>
 #include <QFile>
 #include <iostream>
+#include <QMessageBox>
 
 #include "UISourceGen.h"
 
 #include "utility/inc/StringUtils.hpp"
 #include "utility/inc/FileUtils.hpp"
+#include "utility/inc/SystemUtils.hpp"
 
 #include "sgen_utils/inc/SourceGen.h"
 
@@ -149,13 +151,31 @@ int main(int argc , char ** argv)
         <<"class_static_template.h"
         <<"class_virtual_template.h";
 
-        foreach(QString file,files)
+
+        std::string homePath = FileUtils::buildFilePath(SystemUtils::getUserHomeDirectory(),".sgen_templates");
+        std::string localPath = FileUtils::buildFilePath(SystemUtils::getApplicationDirectory(),".sgen_templates");
+        bool isHome = FileUtils::isDirectory(homePath);
+        bool isLocal = FileUtils::isDirectory(localPath);
+
+        if (!isHome && !isLocal)
         {
-            QFile f("templates/"+file);
-            if (f.open(QFile::ReadOnly))
+            std::cerr << "Could not locate templates for sgen.  \nPlease ensure they are located in same path as the binary or in user home directory."<<std::endl;
+            return 0;
+        }
+
+        std::string path = isHome?homePath:localPath;
+        for(QString file : files)
+        {
+            std::string filePath = FileUtils::buildFilePath(path,file.toStdString());
+            if (FileUtils::fileExists(filePath))
             {
-                QString fileData(f.readAll());
-                fileDataMap[file.toStdString()] = fileData.toStdString();
+                std::string fileData = FileUtils::getFileContents(filePath);
+                fileDataMap[file.toStdString()] = fileData;
+            }
+            else
+            {
+                QMessageBox::critical(nullptr, "Template File Error", "The location at \""+QString::fromStdString(filePath)+"\" does not appear to be valid.\nPlease ensure all template files are installed correctly.");
+                exit(0);
             }
         }
 

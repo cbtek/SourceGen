@@ -1152,8 +1152,8 @@ namespace colors{
         ,RANDOM_LIGHT
         ,RANDOM_DARK
         ,NUM_COLORS
-        ,INVISIBLE
-        ,TRANSPARENT
+        ,INVISIBLE_1
+        ,TRANSPARENT_1
     };
 
 }

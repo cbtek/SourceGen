@@ -33,10 +33,14 @@ SOFTWARE.
 #include "sgen_utils/inc/SourceGen.h"
 
 #include "utility/inc/StringList.h"
+#include "utility/inc/SystemUtils.hpp"
+#include "utility/inc/FileUtils.hpp"
 #include "utility/inc/ColorUtils.hpp"
 
 
 #include "ui_UISourceGen.h"
+
+using namespace cbtek::common::utility;
 
 namespace cbtek {
 namespace products {
@@ -179,16 +183,32 @@ void UISourceGen::onSave()
     <<"class_static_template.h"
     <<"class_virtual_template.h";
 
-    foreach(QString file,files)
+    std::string homePath = FileUtils::buildFilePath(SystemUtils::getUserHomeDirectory(),".sgen_templates");
+    std::string localPath = FileUtils::buildFilePath(SystemUtils::getApplicationDirectory(),".sgen_templates");
+    bool isHome = FileUtils::isDirectory(homePath);
+    bool isLocal = FileUtils::isDirectory(localPath);
+
+    if (!isHome && !isLocal)
     {
-        QFile f("templates/"+file);
-        if (f.open(QFile::ReadOnly))
-        {
-            QString fileData(f.readAll());
-            fileDataMap[file.toStdString()] = fileData.toStdString();
-        }
+        QMessageBox::critical(this, "Template File Error", "Could not locate templates for sgen.  \nPlease ensure they are located in same path as the binary or in user home directory.");
+        return;
     }
 
+    std::string path = isHome?homePath:localPath;
+    for(QString file : files)
+    {
+        std::string filePath = FileUtils::buildFilePath(path,file.toStdString());
+        if (FileUtils::fileExists(filePath))
+        {
+            std::string fileData = FileUtils::getFileContents(filePath);
+            fileDataMap[file.toStdString()] = fileData;
+        }
+        else
+        {
+            QMessageBox::critical(this, "Template File Error", "The location at \""+QString::fromStdString(filePath)+"\" does not appear to be valid.\nPlease ensure all template files are installed correctly.");
+            exit(0);
+        }
+    }
 
     SourceGenInfo info;
     info.setClassName(m_ui->m_txtClass->text().toStdString());
