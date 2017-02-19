@@ -29,10 +29,10 @@ namespace cbtek {
 namespace common {
 namespace utility {
 
-class XMLStreamWriter 
+class XMLStreamWriter
 {
-	public:
-	//! Constructor for XMLStreamWriter	
+    public:
+    //! Constructor for XMLStreamWriter
     XMLStreamWriter(std::ostream & out);
 
     /**
@@ -70,16 +70,23 @@ class XMLStreamWriter
      * @param tag
      * @param text
      */
-    void writeTextElement(const std::string & tag, const std::string & text);    
+    void writeTextElement(const std::string & tag, const std::string & text);
+
+    /**
+     * @brief writeData
+     * @param data
+     */
+    void writeData(const std::string & data);
 
     /**
      * @brief writeAttribute
      * @param attributeName
      * @param attributeValue
+     * @param closeTag
      */
-    void writeAttribute(const std::string & attributeName, const std::string & attributeValue);    
-	//! Destructor
-	~XMLStreamWriter();	
+    void writeAttribute(const std::string & attributeName, const std::string & attributeValue, bool closeTag=false);
+    //! Destructor
+    ~XMLStreamWriter();
 
 private:
     void writeTabs();
@@ -90,4 +97,3 @@ private:
 }}}//end namespace
 
 #endif
-

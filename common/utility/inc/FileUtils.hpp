@@ -874,5 +874,33 @@ inline int deleteFolder(const std::string &dirPath)
 #endif
 
 }
+
+static std::string getSanitizedPathName(const std::string& filePathName,
+                                        bool replaceWithUnderscore = false)
+{
+    std::string pathName = filePathName;
+    for (int a1 = pathName.size()-1; a1 >=0 ;--a1)
+    {
+        if (pathName[a1] == '<' ||
+                pathName[a1] == '>' ||
+                pathName[a1] == '|' ||
+                pathName[a1] == '\"' ||
+                pathName[a1] == '\b' ||
+                pathName[a1] == '\0' ||
+                pathName[a1] == '\t' ||
+                pathName[a1] < 32)
+        {
+            if (replaceWithUnderscore)
+            {
+                pathName[a1] = '_';
+            }
+            else
+            {
+                pathName.erase(pathName.begin()+a1);
+            }
+        }
+    }
+    return pathName;
+}
 }}}}
 #endif // _CBTEK_COMMON_UTILITY_FILEUTILS_HPP_

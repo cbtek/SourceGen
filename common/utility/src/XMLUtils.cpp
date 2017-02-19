@@ -37,6 +37,8 @@ std::string XMLUtils::getEncodedString(const std::string &rawString)
     retStr=StringUtils::replace(retStr,"\"","&quot;",true);
     retStr=StringUtils::replace(retStr,"<","&lt;",true);
     retStr=StringUtils::replace(retStr,">","&gt;",true);
+    retStr=StringUtils::replace(retStr,"\n","&nl;",true);
+    retStr=StringUtils::replace(retStr,"\t","&tab;",true);
     return retStr;
 }
 
@@ -47,6 +49,8 @@ std::string XMLUtils::getDecodedString(const std::string &xmlString)
     retStr=StringUtils::replace(retStr,"&quot;","\"",true);
     retStr=StringUtils::replace(retStr,"&lt;","<",true);
     retStr=StringUtils::replace(retStr,"&gt;",">",true);
+    retStr=StringUtils::replace(retStr,"&nl;","\n",true);
+    retStr=StringUtils::replace(retStr,"&tab;","\n",true);
     return retStr;
 }
 }}}//namespace

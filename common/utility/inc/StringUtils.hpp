@@ -1516,5 +1516,24 @@ inline size_t removeAllThatDoNotContain(std::vector<std::string> & vecOut,
     }
     return totalRemoved;
 }
+
+
+static inline void removeNonAlphaNumericInPlace(std::string & srcStr)
+{
+    for (int a1=srcStr.size()-1;a1>=0;--a1)
+    {
+        if (!std::isalnum(srcStr[a1]))
+        {
+            srcStr.erase(srcStr.begin()+a1);
+        }
+    }
+}
+
+static inline std::string removeNonAlphaNumeric(const std::string & srcStr)
+{
+    std::string str = srcStr;
+    removeNonAlphaNumericInPlace(str);
+    return str;
+}
 }}}} //namespace
 #endif //_CBTEK_COMMON_UTILITY_STRING_UTILS_HPP_
