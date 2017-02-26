@@ -28,8 +28,8 @@ sgen_qt - This version provides a GUI that can be integerated with IDEs as an ex
 **For Windows (MinGW)**  
 5) cmake -G "MinGW Makefiles" ..   
 6) mingw32-make  
-7) cd ../bin/SourceGen/release
-8) Build artifacts will be located here
+7) cd ../bin/SourceGen/release   
+8) Build artifacts will be located here   
 
 # SourceGen Help
 
