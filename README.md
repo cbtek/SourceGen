@@ -23,11 +23,13 @@ sgen_qt - This version provides a GUI that can be integerated with IDEs as an ex
 **For Linux (GCC)**  
 5) cmake ..  or cmake -DENABLE_SGEN_QT="TRUE"    
 6) make 
+7) sudo make install
 
 **For Windows (MinGW)**  
 5) cmake -G "MinGW Makefiles" ..   
 6) mingw32-make  
-
+7) cd ../bin/SourceGen/release
+8) Build artifacts will be located here
 
 # SourceGen Help
 
