@@ -51,6 +51,8 @@ class SourceGen
                      common::utility::StringList &log,
                      const common::utility::StringMap &fileDataMap);
 
+    static common::utility::StringMap getValidFileList();
+
     private:
 
     ///

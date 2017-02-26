@@ -29,4 +29,24 @@ add_library(${CURR_TARGET}
 # so that the exe can see them
 add_custom_command(TARGET ${CURR_TARGET} POST_BUILD
                  COMMAND ${CMAKE_COMMAND} -E copy_directory
-                 ${CMAKE_CURRENT_SOURCE_DIR}/templates $<TARGET_FILE_DIR:${CURR_TARGET}>/.sgen_templates)
+                 ${CMAKE_CURRENT_SOURCE_DIR}/.sgen_templates $<TARGET_FILE_DIR:${CURR_TARGET}>/.sgen_templates)
+
+
+#==============================================================================
+# Install 
+#==============================================================================
+if (WIN32)
+
+else()
+    if (ENABLE_SGEN_UTILS_STATIC_LIB)
+            install(TARGETS ${CURR_TARGET} ARCHIVE DESTINATION lib)
+    else()
+            install(TARGETS ${CURR_TARGET} LIBRARY DESTINATION lib)
+    endif()
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/.sgen_templates DESTINATION share)
+endif()
+
+#install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/.sgen_templates DESTINATION $ENV{HOME} PATTERN "*" PERMISSIONS WORLD_READ WORLD_WRITE)
+
+
+

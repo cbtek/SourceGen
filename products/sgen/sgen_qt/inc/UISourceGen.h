@@ -104,6 +104,7 @@ private slots:
     void onInit();
     void onViewLog();
     void onBrowseForCopyrightFile();
+    void onHelp();
 };
 
 }}}//end namespace

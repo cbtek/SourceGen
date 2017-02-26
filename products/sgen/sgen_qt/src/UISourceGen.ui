@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>SourceGen Alpha (11/12/2016)</string>
+   <string>SourceGen Alpha 2 (02/25/2017)</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QCheckBox
@@ -431,6 +431,13 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical
          </property>
          <property name="text">
           <string>About</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="m_btnHelp">
+         <property name="text">
+          <string>Help</string>
          </property>
         </widget>
        </item>

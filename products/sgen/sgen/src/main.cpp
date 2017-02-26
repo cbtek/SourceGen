@@ -130,38 +130,7 @@ int main(int argc , char ** argv)
         return 0;
     }
 
-  
-    StringMap fileDataMap;
-    StringList files = StringList()
-    <<"class_normal_template.cpp"
-    <<"class_normal_template.h"
-    <<"class_qtwidget_template.cpp"
-    <<"class_qtwidget_template.h"
-    <<"class_qtwidget_template.ui"
-    <<"class_singleton_template.cpp"
-    <<"class_singleton_template.h"
-    <<"class_static_template.cpp"
-    <<"class_static_template.h"
-    <<"class_virtual_template.h";
-
-
-    std::string homePath = FileUtils::buildFilePath(SystemUtils::getUserHomeDirectory(),".sgen_templates");
-    std::string localPath = FileUtils::buildFilePath(SystemUtils::getApplicationDirectory(),".sgen_templates");
-    bool isHome = FileUtils::isDirectory(homePath);
-    bool isLocal = FileUtils::isDirectory(localPath);
-
-    if (!isHome && !isLocal)
-    {
-        std::cerr << "Could not locate templates for sgen.  \nPlease ensure they are located in same path as the binary or in user home directory."<<std::endl;
-        return 0;
-    }
-
-    std::string path = isHome?homePath:localPath;
-    for(std::string file : files)
-    {
-        std::string fileData = FileUtils::getFileContents(FileUtils::buildFilePath(path,file));
-        fileDataMap[file] = fileData;
-    }
+    StringMap fileDataMap = SourceGen::getValidFileList();
     StringList emptyLog;
     SourceGen::save(info,emptyLog,fileDataMap);
     return 0;

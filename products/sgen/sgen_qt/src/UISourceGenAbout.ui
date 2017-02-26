@@ -53,7 +53,7 @@ QPushButton::hover
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:xx-large; font-weight:600;&quot;&gt;Version 2.0&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Author: Corey Berry &lt;/p&gt;&lt;p&gt;Build Date: 04-14-2016&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:xx-large; font-weight:600;&quot;&gt;SourceGen Alpha 2&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Author: Corey Berry &lt;/p&gt;&lt;p&gt;Build Date: 02-25-2017&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>

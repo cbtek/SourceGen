@@ -138,15 +138,8 @@ inline bool isDirectory(const std::string &filePath)
 ///
 inline bool fileExists(const std::string & filePath)
 {
-    if (FILE *file = fopen(filePath.c_str(), "r"))
-    {
-        fclose(file);
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    std::ifstream in(filePath.c_str(), std::ios::in);
+    return in.is_open();
 }
 ///
 /// @brief This function returns all lines from the file as a vector
@@ -201,7 +194,7 @@ inline std::vector<std::string> getFileLines(const std::string &filePath)
 ///
 inline void getFileContents(const std::string &filePath, std::string &data)
 {
-    std::fstream in(filePath.c_str());
+    std::fstream in(filePath.c_str(), std::ios::in);
 
     while(in)
     {
@@ -629,7 +622,7 @@ inline void deleteFile(const std::string & sourceFile)
     }
 }
 
-inline void createDirectory(const std::string &dirPath)
+inline bool createDirectory(const std::string &dirPath)
 {
     int nError=0;
     #if defined(_WIN32)
@@ -638,6 +631,7 @@ inline void createDirectory(const std::string &dirPath)
     #else
         nError = mkdir(dirPath.c_str(),0733);
     #endif
+    return isDirectory(dirPath);
 }
 
 inline void writeRawContentsToFile(const std::string & filePath,const char * buffer, size_t bufferSize)

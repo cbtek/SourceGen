@@ -138,47 +138,7 @@ int main(int argc , char ** argv)
 
     if (!showUI && classType.size() && className.size())
     {
-        StringMap fileDataMap;
-        QStringList files = QStringList()
-        <<"class_normal_template.cpp"
-        <<"class_normal_template.h"
-        <<"class_qtwidget_template.cpp"
-        <<"class_qtwidget_template.h"
-        <<"class_qtwidget_template.ui"
-        <<"class_singleton_template.cpp"
-        <<"class_singleton_template.h"
-        <<"class_static_template.cpp"
-        <<"class_static_template.h"
-        <<"class_virtual_template.h";
-
-
-        std::string homePath = FileUtils::buildFilePath(SystemUtils::getUserHomeDirectory(),".sgen_templates");
-        std::string localPath = FileUtils::buildFilePath(SystemUtils::getApplicationDirectory(),".sgen_templates");
-        bool isHome = FileUtils::isDirectory(homePath);
-        bool isLocal = FileUtils::isDirectory(localPath);
-
-        if (!isHome && !isLocal)
-        {
-            std::cerr << "Could not locate templates for sgen.  \nPlease ensure they are located in same path as the binary or in user home directory."<<std::endl;
-            return 0;
-        }
-
-        std::string path = isHome?homePath:localPath;
-        for(QString file : files)
-        {
-            std::string filePath = FileUtils::buildFilePath(path,file.toStdString());
-            if (FileUtils::fileExists(filePath))
-            {
-                std::string fileData = FileUtils::getFileContents(filePath);
-                fileDataMap[file.toStdString()] = fileData;
-            }
-            else
-            {
-                QMessageBox::critical(nullptr, "Template File Error", "The location at \""+QString::fromStdString(filePath)+"\" does not appear to be valid.\nPlease ensure all template files are installed correctly.");
-                exit(0);
-            }
-        }
-
+        StringMap fileDataMap = SourceGen::getValidFileList();
         StringList emptyLog;
         SourceGen::save(info,emptyLog,fileDataMap);
         return 0;

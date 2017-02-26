@@ -58,8 +58,10 @@ target_link_libraries(${CURR_TARGET}
                       common_utils
                       Qt5::Widgets)
 
-# Copy templates folder to build directory
-# so that the exe can see them
-add_custom_command(TARGET ${CURR_TARGET} POST_BUILD
-                 COMMAND ${CMAKE_COMMAND} -E copy_directory
-                 ${CMAKE_CURRENT_SOURCE_DIR}/templates $<TARGET_FILE_DIR:${CURR_TARGET}>/templates)
+#==============================================================================
+# Install
+#==============================================================================
+INSTALL(TARGETS ${CURR_TARGET} RUNTIME DESTINATION bin)
+
+
+

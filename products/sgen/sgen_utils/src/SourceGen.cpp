@@ -231,6 +231,65 @@ bool SourceGen::save(const SourceGenInfo &info,
     return true;
 }
 
+StringMap SourceGen::getValidFileList()
+{
+    StringList files = StringList()
+    <<"class_normal_template.cpp"
+    <<"class_normal_template.h"
+    <<"class_qtwidget_template.cpp"
+    <<"class_qtwidget_template.h"
+    <<"class_qtwidget_template.ui"
+    <<"class_singleton_template.cpp"
+    <<"class_singleton_template.h"
+    <<"class_static_template.cpp"
+    <<"class_static_template.h"
+    <<"class_virtual_template.h";
+
+
+       std::string path = FileUtils::buildFilePath(SystemUtils::getUserHomeDirectory(),".sgen_templates");
+    if (!FileUtils::isDirectory(path))
+    {
+        path = FileUtils::buildFilePath(SystemUtils::getApplicationDirectory(),".sgen_templates");
+        if (!FileUtils::isDirectory(path))
+        {
+            path = FileUtils::buildFilePath(SystemUtils::getUserAppDirectory(),".sgen_templates");
+
+            #ifdef __gnu_linux__
+            if (!FileUtils::isDirectory(path))
+            {
+               path = FileUtils::buildFilePath("/usr/local/share",".sgen_templates");
+            }
+            #endif
+        }
+    }
+
+    if (!FileUtils::isDirectory(path))
+    {
+        throw FileNotFoundException(EXCEPTION_TAG+"Could not find valid path for .sgen_templates!");
+    }
+
+    StringMap fileDataMap;
+    for(std::string file : files)
+    {
+        std::string filePath = FileUtils::buildFilePath(path,file);
+        if (FileUtils::fileExists(filePath))
+        {
+            std::string fileData = FileUtils::getFileContents(filePath);
+            if (fileData.size() == 0)
+            {
+                throw FileNotFoundException(EXCEPTION_TAG+"The location at \""+filePath+"\" Contains no content or can not be read.\nPlease ensure all template files are installed correctly.");
+            }
+            fileDataMap[file] = fileData;
+        }
+        else
+        {
+            throw FileNotFoundException(EXCEPTION_TAG+"The location at \""+filePath+"\" does not appear to be valid.\nPlease ensure all template files are installed correctly.");
+        }
+    }
+    return fileDataMap;
+
+}
+
 ////////////////////////////////////////////////////////////////////////
 /// \brief SourceGen::saveGettersSetters
 /// \param gettersSetters

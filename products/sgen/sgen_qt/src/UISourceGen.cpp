@@ -169,82 +169,49 @@ void UISourceGen::onSave()
         QMessageBox::critical(this,"No Type!","You must select a class type!");
         return;
     }
-
-    common::utility::StringMap fileDataMap;
-    QStringList files = QStringList()
-    <<"class_normal_template.cpp"
-    <<"class_normal_template.h"
-    <<"class_qtwidget_template.cpp"
-    <<"class_qtwidget_template.h"
-    <<"class_qtwidget_template.ui"
-    <<"class_singleton_template.cpp"
-    <<"class_singleton_template.h"
-    <<"class_static_template.cpp"
-    <<"class_static_template.h"
-    <<"class_virtual_template.h";
-
-    std::string homePath = FileUtils::buildFilePath(SystemUtils::getUserHomeDirectory(),".sgen_templates");
-    std::string localPath = FileUtils::buildFilePath(SystemUtils::getApplicationDirectory(),".sgen_templates");
-    bool isHome = FileUtils::isDirectory(homePath);
-    bool isLocal = FileUtils::isDirectory(localPath);
-
-    if (!isHome && !isLocal)
+    try
     {
-        QMessageBox::critical(this, "Template File Error", "Could not locate templates for sgen.  \nPlease ensure they are located in same path as the binary or in user home directory.");
-        return;
-    }
+        common::utility::StringMap fileDataMap = SourceGen::getValidFileList();
+        SourceGenInfo info;
+        info.setClassName(m_ui->m_txtClass->text().toStdString());
+        info.setGetsSets(m_ui->m_txtGetSet->toPlainText().toStdString());
+        info.setIncludes(m_ui->m_txtIncludes->text().toStdString());
+        info.setBaseClasses(m_ui->m_txtInherits->text().toStdString());
+        info.setNamespace(m_ui->m_txtNamespace->text().toStdString());
+        info.setClassType(m_ui->m_lstTypes->currentItem()->text().toStdString());
+        info.setOutputFolder(m_ui->m_txtOutputDir->text().toStdString());
+        info.setCanOverwrite(m_ui->m_chkOverwrite->isChecked());
+        info.setCopyrightFile(m_ui->m_txtCopyright->text().toStdString());
 
-    std::string path = isHome?homePath:localPath;
-    for(QString file : files)
-    {
-        std::string filePath = FileUtils::buildFilePath(path,file.toStdString());
-        if (FileUtils::fileExists(filePath))
+        if (m_ui->m_chkSaveToSubfolder->isChecked() && m_ui->m_cmbHeaderFolder->currentIndex()>=0)
         {
-            std::string fileData = FileUtils::getFileContents(filePath);
-            fileDataMap[file.toStdString()] = fileData;
+            info.setIncSubFolder(m_ui->m_cmbHeaderFolder->currentText().toStdString());
         }
-        else
+
+        if (m_ui->m_chkSaveToSubfolder->isChecked() && m_ui->m_cmbSourceFolder->currentIndex()>=0)
         {
-            QMessageBox::critical(this, "Template File Error", "The location at \""+QString::fromStdString(filePath)+"\" does not appear to be valid.\nPlease ensure all template files are installed correctly.");
-            exit(0);
+            info.setSrcSubFolder(m_ui->m_cmbSourceFolder->currentText().toStdString());
+        }
+
+        if (m_ui->m_chkSaveToSubfolder->isChecked() && m_ui->m_cmbUIFolder->currentIndex()>=0)
+        {
+            info.setUiSubFolder(m_ui->m_cmbUIFolder->currentText().toStdString());
+        }
+        common::utility::StringList log;
+
+        if (SourceGen::save(info,log,fileDataMap))
+        {
+            m_whiteOut= 127;
+        }
+        m_log << log;
+        if (m_closeOnSave)
+        {
+            this->close();
         }
     }
-
-    SourceGenInfo info;
-    info.setClassName(m_ui->m_txtClass->text().toStdString());
-    info.setGetsSets(m_ui->m_txtGetSet->toPlainText().toStdString());
-    info.setIncludes(m_ui->m_txtIncludes->text().toStdString());
-    info.setBaseClasses(m_ui->m_txtInherits->text().toStdString());
-    info.setNamespace(m_ui->m_txtNamespace->text().toStdString());
-    info.setClassType(m_ui->m_lstTypes->currentItem()->text().toStdString());
-    info.setOutputFolder(m_ui->m_txtOutputDir->text().toStdString());
-    info.setCanOverwrite(m_ui->m_chkOverwrite->isChecked());
-    info.setCopyrightFile(m_ui->m_txtCopyright->text().toStdString());
-
-    if (m_ui->m_chkSaveToSubfolder->isChecked() && m_ui->m_cmbHeaderFolder->currentIndex()>=0)
+    catch(const std::exception& e)
     {
-        info.setIncSubFolder(m_ui->m_cmbHeaderFolder->currentText().toStdString());
-    }
-
-    if (m_ui->m_chkSaveToSubfolder->isChecked() && m_ui->m_cmbSourceFolder->currentIndex()>=0)
-    {
-        info.setSrcSubFolder(m_ui->m_cmbSourceFolder->currentText().toStdString());
-    }
-
-    if (m_ui->m_chkSaveToSubfolder->isChecked() && m_ui->m_cmbUIFolder->currentIndex()>=0)
-    {
-        info.setUiSubFolder(m_ui->m_cmbUIFolder->currentText().toStdString());
-    }
-    common::utility::StringList log;
-
-    if (SourceGen::save(info,log,fileDataMap))
-    {
-        m_whiteOut= 127;
-    }
-    m_log << log;    
-    if (m_closeOnSave)
-    {
-        this->close();
+        QMessageBox::critical(this,"Exception Occured!",QString(e.what()));
     }
 }
 
@@ -337,6 +304,7 @@ void UISourceGen::onInit()
     connect(m_ui->m_txtClass,SIGNAL(textChanged(QString)),this,SLOT(onNameChanged(QString)));
     connect(m_ui->m_btnClear,SIGNAL(clicked()),this,SLOT(onClear()));
     connect(m_ui->m_btnAbout,SIGNAL(clicked()),this,SLOT(onAbout()));
+    connect(m_ui->m_btnHelp,SIGNAL(clicked()),this,SLOT(onHelp()));
     connect(m_ui->m_chkDisableGraphics,SIGNAL(toggled(bool)),this,SLOT(onToggleGraphics(bool)));
     m_init=false;
     m_timerId=startTimer(60);
@@ -362,6 +330,56 @@ void UISourceGen::onBrowseForCopyrightFile()
     QString file = QFileDialog::getOpenFileName(this,tr("Select Copyright File"),m_ui->m_txtOutputDir->text(),tr("Text Files (*.txt)"));
     if (file.size()==0)return;
     m_ui->m_txtCopyright->setText(file);
+}
+
+void UISourceGen::onHelp()
+{
+    QPlainTextEdit * helpText = new QPlainTextEdit;
+    helpText->resize(800,600);
+
+QString data=
+    "------------------------------------\n"
+    "SourceGen Help\n"
+    "------------------------------------\n"
+    "--class-name       [-n]   <name of class>    (required)\n"
+    "--class-type       [-t]   <class type>\n"
+    "--class-includes   [-inc] <list of includes>\n"
+    "--class-inherits   [-inh] <list of inherits>\n"
+    "--class-namespace  [-p]   <namespace>\n"
+    "--class-attributes [-a]   <attribute list>\n"
+    "--copyright-file   [-c]   <copyright file>\n"
+    "--output-folder    [-o]   <output folder>\n"
+    "--header-subfolder [-hs]  <header sub-folder>\n"
+    "--source-subfolder [-ss]  <source sub-folder>\n"
+    "--ui-subfolder     [-us]  <ui sub-folder>\n"
+    "--help             [-h]   (displays this help message)\n"
+    "------------------------------------\n"
+    "Valid class-types:\n"
+    "       1) NORMAL\n"
+    "        2) STATIC\n"
+    "        3) SINGLETON\n"
+    "        4) VIRTUAL\n"
+    "        5) QWIDGET\n"
+    "        6) QDIALOG\n"
+    "        7) QMAINWINDOW\n"
+    "------------------------------------\n"
+    "Example:\n"
+    "sgen\n"
+    "--class-name \"MyClass\"\n"
+    "--class-type \"NORMAL\"\n"
+    "--class-namespace \"MyCompany.Package.MyClass\"\n"
+    "--class-includes \"<iostream>,<fstream>,*MyInclude.h*\"\n"
+    "--class-inherits \"public MyInclude, public MyOtherInclude\"\n"
+    "--class-attributes \"id:int,x:float,y:float,z:float,name:std::string\"\n"
+    "--output-folder \"C:/\"\n"
+    "------------------------------------\n";
+    helpText->setPlainText(data);
+    helpText->setReadOnly(false);
+    QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    fixedFont.setPointSize(14);
+    helpText->setFont(fixedFont);
+    helpText->setReadOnly(true);
+    helpText->show();
 }
 
 void UISourceGen::paintEvent(QPaintEvent *)
