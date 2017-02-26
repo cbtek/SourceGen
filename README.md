@@ -22,7 +22,7 @@ sgen_qt - This version provides a GUI that can be integerated with IDEs as an ex
 
 **For Linux (GCC)**  
 5) cmake ..  or cmake -DENABLE_SGEN_QT="TRUE"    
-6) make 
+6) make   
 7) sudo make install
 
 **For Windows (MinGW)**  
