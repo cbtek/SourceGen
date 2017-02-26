@@ -45,19 +45,19 @@ int main(int argc , char ** argv)
 
     QApplication a(argc, argv);   
     std::string classType       = StringUtils::toUpperTrimmed(StringUtils::getCommandLineArg(argc,argv,"--class-type"));
-    std::string className       = StringUtils::getCommandLineArg(argc,argv,"--class-name");
-    std::string classInherits   = StringUtils::getCommandLineArg(argc,argv,"--class-inherits");
-    std::string classIncludes   = StringUtils::getCommandLineArg(argc,argv,"--class-includes");
-    std::string classNamespace  = StringUtils::getCommandLineArg(argc,argv,"--class-namespace");
-    std::string classAttributes = StringUtils::getCommandLineArg(argc,argv,"--class-attributes");
-    std::string outputFolder    = StringUtils::getCommandLineArg(argc,argv,"--output-folder");
-    std::string copyrightFile   = StringUtils::getCommandLineArg(argc,argv,"--copyright-file");
-    std::string headerSubfolder = StringUtils::getCommandLineArg(argc,argv,"--header-subfolder");
-    std::string sourceSubfolder = StringUtils::getCommandLineArg(argc,argv,"--source-subfolder");
-    std::string uiSubfolder     = StringUtils::getCommandLineArg(argc,argv,"--ui-subfolder");
+    std::string className       = StringUtils::getCommandLineArg(argc,argv,"--class-name","-n");
+    std::string classInherits   = StringUtils::getCommandLineArg(argc,argv,"--class-inherits","-inh");
+    std::string classIncludes   = StringUtils::getCommandLineArg(argc,argv,"--class-includes","-inc");
+    std::string classNamespace  = StringUtils::getCommandLineArg(argc,argv,"--class-namespace","-p");
+    std::string classAttributes = StringUtils::getCommandLineArg(argc,argv,"--class-attributes","-a");
+    std::string outputFolder    = StringUtils::getCommandLineArg(argc,argv,"--output-folder","-o");
+    std::string copyrightFile   = StringUtils::getCommandLineArg(argc,argv,"--copyright-file","-c");
+    std::string headerSubfolder = StringUtils::getCommandLineArg(argc,argv,"--header-subfolder","-hs");
+    std::string sourceSubfolder = StringUtils::getCommandLineArg(argc,argv,"--source-subfolder","-ss");
+    std::string uiSubfolder     = StringUtils::getCommandLineArg(argc,argv,"--ui-subfolder","-us");
 
     bool closeOnSave = StringUtils::commandLineArgExists(argc,argv,"--close-on-save");
-    bool showHelp  = StringUtils::commandLineArgExists(argc,argv,"--help");
+    bool showHelp  = StringUtils::commandLineArgExists(argc,argv,"--help") ||  StringUtils::commandLineArgExists(argc,argv,"-h");;
     bool showUI  = StringUtils::commandLineArgExists(argc,argv,"--populate-ui");
     bool disableAnimations  = StringUtils::commandLineArgExists(argc,argv,"--disable-animations");
 //For debugging:
