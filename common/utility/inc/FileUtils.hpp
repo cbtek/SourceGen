@@ -572,7 +572,8 @@ inline std::string getCurrentPath()
     #ifdef _WIN32
         GetCurrentDirectoryA(MAX_PATH, dir);
     #else
-        getcwd(dir, MAX_PATH);
+        char * dirPtr =  nullptr;
+        dirPtr = getcwd(dir, MAX_PATH);
     #endif
         return std::string(dir);
 }

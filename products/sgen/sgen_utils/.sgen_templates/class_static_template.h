@@ -2,10 +2,7 @@
     $CLASS_NAME.h
     $COPYRIGHT
 */
-
-#ifndef $HEADER_GUARD
-#define $HEADER_GUARD
-
+#pragma once
 $INCLUDES_H
 $BEGIN_NAMESPACE
 
@@ -23,5 +20,3 @@ private:
 	~$CLASS_NAME();	
 };
 $END_NAMESPACE
-#endif
-
