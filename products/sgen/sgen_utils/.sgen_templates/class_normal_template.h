@@ -8,19 +8,16 @@ $BEGIN_NAMESPACE
 class $CLASS_NAME $PARENT_CLASSES
 {
 public:
-   /*
-    * @brief $CLASS_NAME
-    *
-	*/
-	$CLASS_NAME();
+   /**
+     * @brief $CLASS_NAME     
+     */
+    $CLASS_NAME();
     $CLASS_SETTERS_H
     $CLASS_GETTERS_H
-	/*
-	 * @brief $CLASS_NAME (Descructor)
-     *
-	 */
-	~$CLASS_NAME();	
-
+    /**
+      * Destructor for this class      
+      */
+    ~$CLASS_NAME();
 private:
     $CLASS_MEMBERS_H
 };

@@ -12,21 +12,21 @@ class $CLASS_NAME : public $QT_WIDGET
     Q_OBJECT
 public:
    /**
-    * @brief $CLASS_NAME
-    * @param parent Pointer to parent widget. Defaults to null.
-	*/		
-    explicit $CLASS_NAME(QWidget *parent = 0);
+     * @brief $CLASS_NAME
+     * @param parent Pointer to parent widget. Defaults to null.
+	 */		
+    explicit $CLASS_NAME(QWidget *parent = nullptr);
     $CLASS_SETTERS_H
     $CLASS_GETTERS_H
    /**
-    * @brief $CLASS_NAME
-    *
-	*/
+     * @brief Destructor for this class     
+	 */
     ~$CLASS_NAME();
 private:
     /** 
-    * MOC generated ui class for this widget
-    */
+      * Qt meta object compiler (moc) generated user interface.
+      * Objects created in designer will appear in m_ui object
+      */
      Ui_$CLASS_NAME *m_ui;
     $CLASS_MEMBERS_H
 };
