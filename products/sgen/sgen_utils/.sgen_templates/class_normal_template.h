@@ -9,14 +9,14 @@ class $CLASS_NAME $PARENT_CLASSES
 {
 public:
    /**
-     * @brief $CLASS_NAME     
-     */
+    * @brief $CLASS_NAME     
+    */
     $CLASS_NAME();
     $CLASS_SETTERS_H
     $CLASS_GETTERS_H
     /**
-      * Destructor for this class      
-      */
+     * Destructor for this $CLASS_NAME
+     */
     ~$CLASS_NAME();
 private:
     $CLASS_MEMBERS_H

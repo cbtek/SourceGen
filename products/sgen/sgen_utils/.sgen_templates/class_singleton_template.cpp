@@ -10,18 +10,14 @@
 
 $BEGIN_NAMESPACE
 $CLASS_NAME $CLASS_NAME::m_instance = $CLASS_NAME();
-
-
 $CLASS_NAME & $CLASS_NAME::inst()
 {
     return m_instance;
 }
-
 $CLASS_NAME::$CLASS_NAME()
 {
 
 }
-
 $CLASS_NAME::~$CLASS_NAME()
 {
 
